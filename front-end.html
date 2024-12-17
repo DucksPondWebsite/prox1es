@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Proxy Search Engine</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 50px;
+        }
+        input[type="text"] {
+            width: 60%;
+            padding: 10px;
+            font-size: 1em;
+        }
+        input[type="submit"] {
+            padding: 10px 20px;
+            font-size: 1em;
+        }
+    </style>
+</head>
+<body>
+    <h1>Proxy Search Engine</h1>
+    <form id="searchForm" action="/search" method="GET">
+        <input type="text" name="query" placeholder="Enter your search query">
+        <input type="submit" value="Search">
+    </form>
+    <div id="results"></div>
+
+    <script>
+        document.getElementById('searchForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const query = document.querySelector('input[name="query"]').value;
+            fetch(`/search?query=${encodeURIComponent(query)}`)
+                .then(response => response.json())
+                .then(data => {
+                    const resultsDiv = document.getElementById('results');
+                    resultsDiv.innerHTML = data.results.map(result => `<div>${result}</div>`).join('');
+                });
+        });
+    </script>
+</body>
+</html>
